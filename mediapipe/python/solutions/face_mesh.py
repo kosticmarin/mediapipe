@@ -99,7 +99,7 @@ class FaceMesh(SolutionBase):
             'use_prev_landmarks': not static_image_mode,
         },
         calculator_params={
-            'facedetectionshortrangecpu__facedetectionshortrange__facedetection__TensorsToDetectionsCalculator.min_score_thresh':
+            'facedetectionfullrangecpu__facedetectionfullrange__facedetection__TensorsToDetectionsCalculator.min_score_thresh':
                 min_detection_confidence,
             'facelandmarkcpu__ThresholdingCalculator.threshold':
                 min_tracking_confidence,

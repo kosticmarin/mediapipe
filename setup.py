@@ -66,12 +66,12 @@ def _get_long_description():
 def _check_bazel():
   """Check Bazel binary as well as its version."""
 
-  if not shutil.which('bazel'):
+  if not shutil.which('bazelisk'):
     sys.stderr.write('could not find bazel executable. Please install bazel to'
                      'build the MediaPipe Python package.')
     sys.exit(-1)
   try:
-    bazel_version_info = subprocess.check_output(['bazel', '--version'])
+    bazel_version_info = subprocess.check_output(['bazelisk', '--version'])
   except subprocess.CalledProcessError as e:
     sys.stderr.write('fail to get bazel version by $ bazel --version: ' +
                      str(e.output))
@@ -204,7 +204,7 @@ class BuildModules(build_ext.build_ext):
   boolean_options = build_ext.build_ext.boolean_options + ['link-opencv']
 
   def initialize_options(self):
-    self.link_opencv = False
+    self.link_opencv = True
     build_ext.build_ext.initialize_options(self)
 
   def finalize_options(self):
@@ -251,7 +251,7 @@ class BuildModules(build_ext.build_ext):
     """Download an external file from GCS via Bazel."""
 
     fetch_model_command = [
-        'bazel',
+        'bazelisk',
         'build',
         external_file,
     ]
@@ -263,7 +263,7 @@ class BuildModules(build_ext.build_ext):
     """Generate binary graph for a particular MediaPipe binary graph target."""
 
     bazel_command = [
-        'bazel',
+        'bazelisk',
         'build',
         '--compilation_mode=opt',
         '--copt=-DNDEBUG',
@@ -309,7 +309,7 @@ class BuildExtension(build_ext.build_ext):
   boolean_options = build_ext.build_ext.boolean_options + ['link-opencv']
 
   def initialize_options(self):
-    self.link_opencv = False
+    self.link_opencv = True
     build_ext.build_ext.initialize_options(self)
 
   def finalize_options(self):
@@ -325,7 +325,7 @@ class BuildExtension(build_ext.build_ext):
     if not os.path.exists(self.build_temp):
       os.makedirs(self.build_temp)
     bazel_command = [
-        'bazel',
+        'bazelisk',
         'build',
         '--compilation_mode=opt',
         '--copt=-DNDEBUG',
@@ -359,7 +359,7 @@ class BuildPy(build_py.build_py):
   boolean_options = build_py.build_py.boolean_options + ['link-opencv']
 
   def initialize_options(self):
-    self.link_opencv = False
+    self.link_opencv = True
     build_py.build_py.initialize_options(self)
 
   def finalize_options(self):
